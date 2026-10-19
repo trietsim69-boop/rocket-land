@@ -4,11 +4,11 @@
 **Description:** Install `gymnasium[box2d]`, `stable-baselines3`, `matplotlib`, `imageio`, `gradio`; pin in `requirements.txt`. Run Gymnasium's own `heuristic()` controller to prove physics + scoring work.
 
 **Acceptance criteria:**
-- [ ] `requirements.txt` installs cleanly in a fresh venv
-- [ ] Heuristic lander mean true score ≥ 200 over 10 seeded episodes
+- [x] `requirements.txt` installs cleanly in a fresh venv
+- [x] Heuristic lander mean true score ≥ 200 over 10 seeded episodes (265.4, seeds 0–9)
 
 **Verification:**
-- [ ] `python -c "import gymnasium as g; from gymnasium.envs.box2d.lunar_lander import demo_heuristic_lander as d; print(d(g.make('LunarLander-v3')))"` ≥ 200
+- [x] `python -c "import gymnasium as g; from gymnasium.envs.box2d.lunar_lander import demo_heuristic_lander as d; print(d(g.make('LunarLander-v3')))"` ≥ 200
 
 **Dependencies:** None
 **Files:** `requirements.txt`

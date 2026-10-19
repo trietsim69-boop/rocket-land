@@ -41,7 +41,7 @@ env installs (box2d)
 ## Task List (details in `tasks/todo.md`)
 
 ### Phase 1: Foundation
-- [ ] Task 1: Env runs; built-in heuristic lander scores ≥ 200
+- [x] Task 1: Env runs; built-in heuristic lander scores ≥ 200
 - [ ] Task 2: Sparse-reward wrapper, verified by reward decomposition check
 - [ ] Task 3: End-to-end slice: train PPO on `default`, eval true score, save model + CSV
 

@@ -48,3 +48,18 @@ class PotentialShaping(gym.Wrapper):
         r += self.gamma * phi - self.phi
         self.phi = phi
         return obs, r, terminated, truncated, info
+
+
+class NaiveBonus(gym.Wrapper):
+    """+bonus every step within `radius` of the pad (normalized x, y). Not potential-based: hovering near the
+    pad for 1000 steps (~+500) beats landing (+100), so the optimal policy changes. That's the point."""
+
+    def __init__(self, env, bonus=0.5, radius=0.2):
+        super().__init__(env)
+        self.bonus, self.radius = bonus, radius
+
+    def step(self, action):
+        obs, r, terminated, truncated, info = self.env.step(action)
+        if np.hypot(obs[0], obs[1]) < self.radius:
+            r += self.bonus
+        return obs, r, terminated, truncated, info

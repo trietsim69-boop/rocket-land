@@ -81,11 +81,11 @@
 **Description:** `NaiveBonus` on `SparseReward`: e.g. +0.5 every step within a radius of the pad. Not potential-based → optimal policy may change.
 
 **Acceptance criteria:**
-- [ ] True score + success rate recorded
-- [ ] Rollout shows hovering/stalling, or a note on why not
+- [x] True score + success rate recorded: final −119, 0% success at every eval
+- [x] Rollout shows hovering/stalling, or a note on why not: stalls (hovers at spawn height, y≈1.0–1.4, until the 1000-step timeout) but never collects the bonus: 0 in-radius steps in rollouts from the 196k/327k/458k/655k/final checkpoints. Radius 0.2 sits right above the ground, so it's too risky to discover; stall comes from avoiding the −100 crash, not from the bonus.
 
 **Verification:**
-- [ ] `python train.py --reward hack --seed 0 --steps 1000000`; watch one rollout
+- [x] `python train.py --reward hack --seed 0 --steps 1000000`; watch one rollout
 
 **Dependencies:** 4
 **Files:** `shaping.py`, `train.py`

@@ -66,16 +66,17 @@ def main():
     p.add_argument("--reward", choices=WRAPPERS, default="default")
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--steps", type=int, default=1_000_000)
+    p.add_argument("--gae-lambda", type=float, default=HPARAMS["gae_lambda"])
     a = p.parse_args()
 
-    out = f"runs/{a.reward}_s{a.seed}"
+    out = f"runs/{a.reward}_s{a.seed}" + (f"_lam{a.gae_lambda}" if a.gae_lambda != HPARAMS["gae_lambda"] else "")
     os.makedirs(out, exist_ok=True)
     with open(f"{out}/eval.csv", "w", newline="") as f:
         csv.writer(f).writerow(["step", "episodes_so_far", "mean_true_score", "success_rate"])
 
     # make_vec_env puts Monitor directly on the base env, under wrapper_class -> Monitor logs the true score
     env = make_vec_env("LunarLander-v3", n_envs=N_ENVS, seed=a.seed, wrapper_class=WRAPPERS[a.reward])
-    model = PPO("MlpPolicy", env, seed=a.seed, device="cpu", **HPARAMS)
+    model = PPO("MlpPolicy", env, seed=a.seed, device="cpu", **{**HPARAMS, "gae_lambda": a.gae_lambda})
     model.learn(a.steps, callback=EvalCallback(out))
     model.save(f"{out}/model.zip")
 

@@ -43,7 +43,7 @@ env installs (box2d)
 ### Phase 1: Foundation
 - [x] Task 1: Env runs; built-in heuristic lander scores ≥ 200
 - [x] Task 2: Sparse-reward wrapper, verified by reward decomposition check
-- [ ] Task 3: End-to-end slice: train PPO on `default`, eval true score, save model + CSV
+- [x] Task 3: End-to-end slice: train PPO on `default`, eval true score, save model + CSV
 
 ### Checkpoint A: pipeline works end to end
 
@@ -73,7 +73,7 @@ env installs (box2d)
 | `box2d` won't build on Python 3.13 | High | Task 1 first; fall back to a 3.11/3.12 venv (HF Spaces lets you pin Python) |
 | Teleporting lander breaks joints/physics | Med | Move body + legs by the same offset, zero velocities; Task 7 checks a resting drop from the click point |
 | Random starts much harder to learn → agents crash from corners | Med | Heatmap shows where it fails; restrict clickable region to where success ≥ 80%, or train longer |
-| Compute (4 conditions × 3 seeds × ~1–2M steps on CPU) | Med | Phase 2 at 300k; sweep in background; drop `default`/seeds before dropping `pbrs` vs `sparse` |
+| Compute (4 conditions × 3 seeds × ~1–2M steps on CPU) | Med | Phase 2 at 1M (300k too short); sweep in background; drop `default`/seeds before dropping `pbrs` vs `sparse` |
 | Public app abuse / slow free CPU | Low | Validate + clamp coords, cap episode at 1000 steps, Gradio queue (one run at a time) |
 | `hack` doesn't visibly hack | Low | Per-step proximity bonus so hovering is clearly optimal |
 

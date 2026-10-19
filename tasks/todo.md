@@ -32,20 +32,20 @@
 **Description:** `train.py --reward default --seed 0 --steps N`: `Monitor` inside reward wrapper (logs true score), SB3 PPO with RL-Zoo hyperparams, periodic 10-episode deterministic eval → `runs/{reward}_s{seed}/eval.csv` (step, episodes_so_far, mean_true_score, success_rate) + `model.zip`. Also save a model checkpoint at each eval (`ckpt_{episodes}.zip`) so the progression strip can be rendered later.
 
 **Acceptance criteria:**
-- [ ] 300k-step run produces CSV + model
-- [ ] Scores rise above random-policy level (≈ −150 to −200)
-- [ ] Monitor return under `SparseReward` equals unwrapped return for same seed/actions
+- [x] 1M-step run produces CSV + model (300k was too short for RL-Zoo hparams: −71, 10% success)
+- [x] Scores rise above random-policy level (≈ −150 to −200) (final 263.5, 100% success)
+- [x] Monitor return under `SparseReward` equals unwrapped return for same seed/actions
 
 **Verification:**
-- [ ] `python train.py --reward default --seed 0 --steps 300000`; inspect CSV
+- [x] `python train.py --reward default --seed 0 --steps 1000000`; inspect CSV
 
 **Dependencies:** 2
 **Files:** `train.py`
 **Scope:** S
 
 ### Checkpoint A
-- [ ] `test_shaping.py` passes
-- [ ] Default run learns
+- [x] `test_shaping.py` passes
+- [x] Default run learns
 - [ ] Review with human before spending compute
 
 ## Task 4: `sparse` condition
@@ -56,7 +56,7 @@
 - [ ] One-line note on observed behavior
 
 **Verification:**
-- [ ] `python train.py --reward sparse --seed 0 --steps 300000`
+- [ ] `python train.py --reward sparse --seed 0 --steps 1000000`
 
 **Dependencies:** 3
 **Files:** `train.py`
@@ -71,7 +71,7 @@
 
 **Verification:**
 - [ ] `python test_shaping.py` (telescoping assert)
-- [ ] `python train.py --reward pbrs --seed 0 --steps 300000`
+- [ ] `python train.py --reward pbrs --seed 0 --steps 1000000`
 
 **Dependencies:** 4
 **Files:** `shaping.py`, `test_shaping.py`, `train.py`
@@ -85,7 +85,7 @@
 - [ ] Rollout shows hovering/stalling, or a note on why not
 
 **Verification:**
-- [ ] `python train.py --reward hack --seed 0 --steps 300000`; watch one rollout
+- [ ] `python train.py --reward hack --seed 0 --steps 1000000`; watch one rollout
 
 **Dependencies:** 4
 **Files:** `shaping.py`, `train.py`

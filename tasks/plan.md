@@ -48,7 +48,7 @@ env installs (box2d)
 ### Checkpoint A: pipeline works end to end
 
 ### Phase 2: Shaping experiments (fixed start, seed 0)
-- [ ] Task 4: `sparse` run
+- [x] Task 4: `sparse` run
 - [ ] Task 5: Potential-based shaping `pbrs` + telescoping check
 - [ ] Task 6: Non-potential `hack` shaping; observe hovering
 

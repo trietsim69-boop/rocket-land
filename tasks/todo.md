@@ -52,11 +52,11 @@
 **Description:** Wire `--reward sparse`. Same steps/seed as Task 3.
 
 **Acceptance criteria:**
-- [ ] Curve recorded on true score
-- [ ] One-line note on observed behavior
+- [x] Curve recorded on true score
+- [x] One-line note on observed behavior: collapses to "never fire, free-fall crash" (action 0 every step) by ~300k; final −118.2, 0% success. Fuel is the only dense signal, so not firing beats every non-landing policy.
 
 **Verification:**
-- [ ] `python train.py --reward sparse --seed 0 --steps 1000000`
+- [x] `python train.py --reward sparse --seed 0 --steps 1000000`
 
 **Dependencies:** 3
 **Files:** `train.py`

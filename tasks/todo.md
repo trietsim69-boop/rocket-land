@@ -18,11 +18,11 @@
 **Description:** `SparseReward(gym.Wrapper)` in `shaping.py`: computes `Φ_env(obs)` with the exact formula from `lunar_lander.py`; returns `r − (Φ_env(s') − Φ_env(s))` on non-terminal steps, `r` unchanged on termination.
 
 **Acceptance criteria:**
-- [ ] Non-terminal sparse reward equals −fuel cost only (−0.3·main − 0.03·side)
-- [ ] Terminal reward is ±100 unchanged
+- [x] Non-terminal sparse reward equals −fuel cost only (−0.3·main − 0.03·side)
+- [x] Terminal reward is ±100 unchanged
 
 **Verification:**
-- [ ] `python test_shaping.py` — asserts decomposition over 5k random-policy steps (tol 1e-4)
+- [x] `python test_shaping.py` — asserts decomposition over 5k random-policy steps (tol 1e-4)
 
 **Dependencies:** 1
 **Files:** `shaping.py`, `test_shaping.py`

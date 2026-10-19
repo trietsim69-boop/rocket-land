@@ -42,7 +42,7 @@ env installs (box2d)
 
 ### Phase 1: Foundation
 - [x] Task 1: Env runs; built-in heuristic lander scores ≥ 200
-- [ ] Task 2: Sparse-reward wrapper, verified by reward decomposition check
+- [x] Task 2: Sparse-reward wrapper, verified by reward decomposition check
 - [ ] Task 3: End-to-end slice: train PPO on `default`, eval true score, save model + CSV
 
 ### Checkpoint A: pipeline works end to end

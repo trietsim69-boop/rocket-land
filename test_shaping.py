@@ -1,6 +1,6 @@
 import gymnasium as gym
 
-from shaping import SparseReward
+from shaping import PotentialShaping, SparseReward, potential
 
 FUEL = {0: 0.0, 1: 0.03, 2: 0.3, 3: 0.03}  # discrete actions fire engines at full power
 
@@ -40,7 +40,27 @@ def test_monitor_sees_true_score():
     assert abs(wrapped.env.get_episode_rewards()[0] - total) < 1e-6
 
 
+def test_pbrs_telescopes(gamma=0.999):
+    """Σ γ^t F_t = γ^T Φ(s_T) − Φ(s_0), with Φ(s_T) = 0 on termination. F = pbrs reward − sparse reward."""
+    sparse = SparseReward(gym.make("LunarLander-v3"))
+    pbrs = PotentialShaping(SparseReward(gym.make("LunarLander-v3")), gamma)
+    obs0, _ = sparse.reset(seed=2)
+    pbrs.reset(seed=2)
+    sparse.action_space.seed(2)
+    disc, t, done = 0.0, 0, False
+    while not done:
+        a = int(sparse.action_space.sample())
+        _, r_s, term, trunc, _ = sparse.step(a)
+        _, r_p, *_ = pbrs.step(a)
+        disc += gamma**t * (r_p - r_s)
+        t += 1
+        done = term or trunc
+    assert term  # covers Φ(terminal) = 0
+    assert abs(disc - (gamma**t * 0.0 - potential(obs0))) < 1e-6, (disc, -potential(obs0))
+
+
 if __name__ == "__main__":
     test_sparse_decomposition()
     test_monitor_sees_true_score()
+    test_pbrs_telescopes()
     print("ok")

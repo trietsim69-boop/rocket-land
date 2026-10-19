@@ -66,12 +66,12 @@
 **Description:** `PotentialShaping` on top of `SparseReward`: adds `γΦ(s') − Φ(s)` with my own Φ (closer to pad, slower, upright, leg contact; own weights). γ from PPO config; Φ(terminal) = 0. Optional `--time-penalty c` (−c per step, like the reel); keep c small and check it doesn't teach the agent to crash early to end the episode.
 
 **Acceptance criteria:**
-- [ ] Telescoping: Σ γ^t F_t = γ^T Φ(s_T) − Φ(s_0) over a full episode
-- [ ] Learns faster than `sparse` at equal steps
+- [x] Telescoping: Σ γ^t F_t = γ^T Φ(s_T) − Φ(s_0) over a full episode
+- [ ] Learns faster than `sparse` at equal steps: only early (196k: −32, 30% vs sparse −169, 0%), then decays into the same free-fall crash; final −133, 0%. Likely cause: once the critic learns V − Φ, PBRS advantages ≈ sparse advantages (γ=0.999, λ=0.98), so the fuel trap wins again. Decision pending.
 
 **Verification:**
-- [ ] `python test_shaping.py` (telescoping assert)
-- [ ] `python train.py --reward pbrs --seed 0 --steps 1000000`
+- [x] `python test_shaping.py` (telescoping assert)
+- [x] `python train.py --reward pbrs --seed 0 --steps 1000000`
 
 **Dependencies:** 4
 **Files:** `shaping.py`, `test_shaping.py`, `train.py`

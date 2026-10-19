@@ -8,11 +8,15 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.env_util import make_vec_env
 
-from shaping import SparseReward
+from shaping import PotentialShaping, SparseReward
 
-WRAPPERS = {"default": None, "sparse": SparseReward}
 # RL-Zoo PPO hyperparams for LunarLander
 HPARAMS = dict(n_steps=1024, batch_size=64, gae_lambda=0.98, gamma=0.999, n_epochs=4, ent_coef=0.01)
+WRAPPERS = {
+    "default": None,
+    "sparse": SparseReward,
+    "pbrs": lambda env: PotentialShaping(SparseReward(env), HPARAMS["gamma"]),  # shaping γ must equal PPO's γ
+}
 N_ENVS = 16
 EVAL_EPISODES = 10
 

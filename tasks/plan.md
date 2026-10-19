@@ -49,7 +49,7 @@ env installs (box2d)
 
 ### Phase 2: Shaping experiments (fixed start, seed 0)
 - [x] Task 4: `sparse` run
-- [ ] Task 5: Potential-based shaping `pbrs` + telescoping check
+- [x] Task 5: Potential-based shaping `pbrs` + telescoping check
 - [ ] Task 6: Non-potential `hack` shaping; observe hovering
 
 ### Checkpoint B: each condition shows a distinct, explainable behavior

@@ -10,8 +10,8 @@ from stable_baselines3.common.env_util import make_vec_env
 
 from shaping import PotentialShaping, SparseReward
 
-# RL-Zoo PPO hyperparams for LunarLander
-HPARAMS = dict(n_steps=1024, batch_size=64, gae_lambda=0.98, gamma=0.999, n_epochs=4, ent_coef=0.01)
+# RL-Zoo PPO hyperparams for LunarLander, except gae_lambda 0.98 -> 0.9: at 0.98 pbrs washes out to sparse (runs/*_lam0.98)
+HPARAMS = dict(n_steps=1024, batch_size=64, gae_lambda=0.9, gamma=0.999, n_epochs=4, ent_coef=0.01)
 WRAPPERS = {
     "default": None,
     "sparse": SparseReward,

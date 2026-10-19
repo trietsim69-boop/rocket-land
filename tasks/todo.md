@@ -67,7 +67,7 @@
 
 **Acceptance criteria:**
 - [x] Telescoping: Σ γ^t F_t = γ^T Φ(s_T) − Φ(s_0) over a full episode
-- [ ] Learns faster than `sparse` at equal steps: only early (196k: −32, 30% vs sparse −169, 0%), then decays into the same free-fall crash; final −133, 0%. Likely cause: once the critic learns V − Φ, PBRS advantages ≈ sparse advantages (γ=0.999, λ=0.98), so the fuel trap wins again. Test, `--gae-lambda 0.9`: lands, first ≥200 at 606k, final 245 / 100% → supports the hypothesis. Still needs `default` + `sparse` at λ=0.9 for a fair comparison.
+- [x] Learns faster than `sparse` at equal steps (GAE λ=0.9, now the default): pbrs first ≥200 at 606k, 737k: 221 / 90%, final 245 / 100%; sparse first ≥200 at 950k, 737k: 17 / 10%, final 155 / 80% (slow, near-hover landings). At λ=0.98 both pbrs and sparse collapse to free-fall (runs/*_lam0.98), and `default` prefers 0.98 (263 / 100% vs 134 / 70% at 0.9).
 
 **Verification:**
 - [x] `python test_shaping.py` (telescoping assert)

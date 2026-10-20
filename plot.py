@@ -32,7 +32,8 @@ def load(run):
 
 
 def rand_runs(reward):
-    return [f"runs/{reward}_s{s}_rand" for s in SEEDS if os.path.exists(f"runs/{reward}_s{s}_rand/model.zip")]
+    # eval.csv, not model.zip: models aren't committed, and a clone still has every CSV the plots read
+    return [f"runs/{reward}_s{s}_rand" for s in SEEDS if os.path.exists(f"runs/{reward}_s{s}_rand/eval.csv")]
 
 
 def learning_curves():

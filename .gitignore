@@ -4,3 +4,7 @@ runs/**
 !runs/**/
 !runs/**/eval.csv
 *.pyc
+# private working notes: agent instructions, plans, design mockups
+CLAUDE.md
+tasks/
+UI/

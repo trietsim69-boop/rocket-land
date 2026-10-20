@@ -4,7 +4,7 @@ Reinforcement-learning agents land Gymnasium's [`LunarLander-v3`](https://github
 
 **Live app:** https://rocket-land.onrender.com (free Render instance: after 15 idle minutes the first visit takes about a minute to wake up)
 
-![Training progression: untrained, mid-training, and final pbrs agent, above its learning curve](results/progression.gif)
+![The app: a click drops the rocket, pbrs lands it, then switching to sparse replays the same start](docs/app.gif)
 
 ## Reward shaping in one paragraph
 
@@ -27,6 +27,8 @@ No copy of `lunar_lander.py` is edited; every reward is a wrapper around the ins
 
 All numbers live in [`results/summary.md`](results/summary.md), generated from the saved run CSVs by `python plot.py`.
 
+![Training progression: untrained, mid-training, and final pbrs agent, above its learning curve](results/progression.gif)
+
 - **Fixed start (seed 0).** `sparse` falls into a trap: firing an engine only costs fuel, so with GAE λ = 0.98 it learns to never fire and crash. `pbrs` with the same λ escapes briefly, then collapses into the same trap. Shortening the GAE horizon to λ = 0.9 fixed it: `pbrs` then reaches a solved score well before `sparse`. `default` prefers 0.98 (the RL-Zoo setting it was tuned with). The project uses 0.9 everywhere and keeps the 0.98 runs as the finding.
 - **`hack` hacks.** With the bonus radius at 0.2 it never found the bonus and just hovered high to avoid crashing. At 0.5 it learned to scrape its legs on the pad without coming to rest: a timed-out episode earns more hack reward than a clean landing, at a lower true score.
 - **Random starts (3 seeds each).** All agents except `sparse` land from most of the sky. `pbrs` learns useful behaviour first; `default` and `hack` catch up and finish in the same range; `sparse` is slowest and least consistent across seeds. The far left and right edges are the hardest starts, which is why the app's click zone is narrower than the training region.
@@ -42,6 +44,24 @@ All numbers live in [`results/summary.md`](results/summary.md), generated from t
 
 [`app.py`](app.py) runs the real Box2D episode on the server, with each trained policy's weights exported to numpy (`train.py --export`) so serving needs no torch, and sends back a trajectory (position, angle, leg contacts, action, running true score per step). The page draws it as SVG in the browser. Each agent in the app is the best of its three seeds inside the click zone; the "land in zone" figure on each card is read from `results/heatmap_*.csv`.
 
+![App screenshot: pbrs has landed on the pad, HUD shows the final true score](docs/app.png)
+
+## Repo layout
+
+| Path | What it is |
+|---|---|
+| `shaping.py` | Reward wrappers: `SparseReward`, `PotentialShaping`, `NaiveBonus` |
+| `env.py` | Custom or random start position via `reset(options={"start": (x, y)})` |
+| `train.py` | PPO training + periodic true-score eval; `--export` writes the app's numpy weights |
+| `plot.py` | Learning curves, heatmaps, summary table, progression GIF → `results/` |
+| `app.py` | The web app: episode server function + SVG page |
+| `test_shaping.py` | All checks (reward maths, start positions, app, numpy policy = SB3) |
+| `models/` | The four shipped agents: SB3 `.zip` + numpy `.npz` |
+| `results/` | Generated plots and tables (`python plot.py`) |
+| `runs/*/eval.csv` | Every run's eval curve, the input to `plot.py` (checkpoints aren't committed) |
+| `docs/` | App recording and screenshot for this README |
+| `requirements.txt` / `requirements-app.txt` | Training + plots / serving only |
+
 ## Reproduce
 
 Python 3.11 or 3.12 (Box2D wheels are unreliable on 3.13).
@@ -51,7 +71,7 @@ python -m venv .venv && .venv\Scripts\activate      # Linux/macOS: source .venv/
 pip install -r requirements.txt
 python test_shaping.py                               # reward + start-position + app checks
 python train.py --reward pbrs --seed 0 --random-start --steps 2000000   # one run, ~15–30 min on a laptop CPU
-python plot.py                                       # results/ from runs/*/eval.csv
+python plot.py                                       # results/ from runs/*/eval.csv (progression GIF needs local checkpoints)
 python app.py                                        # http://localhost:7860
 ```
 

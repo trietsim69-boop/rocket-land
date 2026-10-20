@@ -1,5 +1,5 @@
 """Click a spot in the sky, pick an agent, watch it land from there. `python app.py` -> http://localhost:7860
-The server runs the real episode and returns a trajectory; the page (gr.HTML, design from UI/designs/) draws it as SVG."""
+The server runs the real episode and returns a trajectory; the page (one gr.HTML) draws it as SVG."""
 import csv
 import random
 import threading
@@ -18,7 +18,7 @@ REWARDS = {
     "hack": "Sparse + a naive “stay near the pad” bonus",
 }
 MODELS = {r: dict(np.load(f"models/{r}.npz")) for r in REWARDS}  # policy weights, from `train.py --export models/*.zip`
-# Run each models/{r}.zip/.npz was copied from (best seed in the click region, Checkpoint C in tasks/todo.md)
+# Run each models/{r}.zip/.npz was copied from: the best of 3 seeds inside the click region (results/heatmap_*.csv)
 REWARD_RUNS = {"default": "runs/default_s1_rand", "sparse": "runs/sparse_s2_rand", "pbrs": "runs/pbrs_s2_rand", "hack": "runs/hack_s1_rand"}
 CLICK_X = (-0.6, 0.6)  # Checkpoint C: narrower than training (±0.8), where the shipped agents land reliably
 APP_SEED = 0  # fixed terrain: every episode uses the terrain drawn on the page
@@ -112,7 +112,7 @@ def trajectory(req):
     return {"states": states, "outcome": outcome, "score": round(score, 1), "start": [round(x, 2), round(y, 2)], "clamped": bool(clamped)}
 
 
-# ---------- page (markup copied from UI/designs/*.html) ----------
+# ---------- page: header, agent cards, SVG scene, controls ----------
 
 ROCKET = """
 <g id="flame"><path d="M-8,8 Q0,44 8,8 Z" fill="#FF8A3D" opacity="0.9"/><path d="M-5,8 Q0,30 5,8 Z" fill="#FFD27A"/><path d="M-2.5,8 Q0,18 2.5,8 Z" fill="#FFF6DA"/></g>

@@ -133,11 +133,11 @@
 **Description:** In `app.py` (or `env.py`): load model, run one deterministic episode from `(x, y)`, return frames + outcome (`landed` / `crashed` / `timeout`) + true score. Each frame gets a running SCORE overlay (green ≥ 0, red < 0). Models loaded once at startup.
 
 **Acceptance criteria:**
-- [ ] Returns within ~2 s on CPU
-- [ ] Outcome matches the episode's terminal reward
+- [x] Returns within ~2 s on CPU (1.9–2.4 s incl. GIF encode)
+- [x] Outcome matches the episode's terminal reward
 
 **Verification:**
-- [ ] `python -c "from app import land; print(land(0.3, 0.8, 'pbrs')[1:])"`
+- [x] `python -c "from app import land; print(land(0.3, 0.8, 'pbrs')[1:])"`
 
 **Dependencies:** 8
 **Files:** `app.py`

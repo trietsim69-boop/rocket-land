@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rocket Land app screen</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#070B18}
+a{color:#5CC8FF}a:hover{color:#9FE3FF}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #070B18; color: #E6EAF5; font-family: 'Space Grotesk', system-ui, sans-serif; box-sizing: border-box; padding: 32px 24px">
+<div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<div style="display: flex; align-items: center; gap: 14px">
+<svg width="44" height="44" viewBox="-30 -30 60 60" aria-hidden="true">
+<rect x="-30" y="-30" width="60" height="60" rx="14" fill="#0F1630" stroke="#223058"></rect>
+<path d="M-5,8 Q0,26 5,8 Z" fill="#FFB547"></path>
+<line x1="-8" y1="5" x2="-16" y2="16" stroke="#9AA6BD" stroke-width="2.5" stroke-linecap="round"></line>
+<line x1="8" y1="5" x2="16" y2="16" stroke="#9AA6BD" stroke-width="2.5" stroke-linecap="round"></line>
+<polygon points="-9,-12 -12,0 -12,7 12,7 12,0 9,-12" fill="#E8ECF4"></polygon>
+<circle cx="0" cy="-4" r="3.5" fill="#1B2A4A" stroke="#5CC8FF" stroke-width="1.2"></circle>
+</svg>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.01em">Rocket Land</h1>
+<p style="margin: 0; font-size: 15px; color: #9AA6C4">Click the sky, pick a reward, and watch a trained agent land.</p>
+</div>
+</div>
+<a href="#rewards" style="font-size: 15px; padding: 12px 4px">What do the rewards mean?</a>
+</header>
+
+<fieldset id="rewards" style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<legend style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #9AA6C4; padding: 0; margin-bottom: 10px">Agent · training reward</legend>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<label style="flex: 1 1 220px; display: flex; gap: 12px; padding: 16px; border-radius: 12px; border: 1.5px solid #5CC8FF; background: #122045; cursor: pointer">
+<input type="radio" name="agent" checked="checked" style="accent-color: #5CC8FF; width: 18px; height: 18px; margin: 2px 0 0 0">
+<span style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-weight: 600; font-size: 17px">pbrs</span>
+<span style="font-size: 13px; color: #B7C2DC; line-height: 1.4">Potential-based shaping: sparse + γΦ(s′) − Φ(s)</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #5CC8FF; margin-top: 4px">84% land in zone</span>
+</span>
+</label>
+<label style="flex: 1 1 220px; display: flex; gap: 12px; padding: 16px; border-radius: 12px; border: 1px solid #223058; background: #0F1630; cursor: pointer">
+<input type="radio" name="agent" style="accent-color: #5CC8FF; width: 18px; height: 18px; margin: 2px 0 0 0">
+<span style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-weight: 600; font-size: 17px">default</span>
+<span style="font-size: 13px; color: #9AA6C4; line-height: 1.4">The env’s built-in reward</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #9AA6C4; margin-top: 4px">94% land in zone</span>
+</span>
+</label>
+<label style="flex: 1 1 220px; display: flex; gap: 12px; padding: 16px; border-radius: 12px; border: 1px solid #223058; background: #0F1630; cursor: pointer">
+<input type="radio" name="agent" style="accent-color: #5CC8FF; width: 18px; height: 18px; margin: 2px 0 0 0">
+<span style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-weight: 600; font-size: 17px">sparse</span>
+<span style="font-size: 13px; color: #9AA6C4; line-height: 1.4">Only ±100 at the end, plus fuel cost</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #9AA6C4; margin-top: 4px">84% land in zone</span>
+</span>
+</label>
+<label style="flex: 1 1 220px; display: flex; gap: 12px; padding: 16px; border-radius: 12px; border: 1px solid #223058; background: #0F1630; cursor: pointer">
+<input type="radio" name="agent" style="accent-color: #5CC8FF; width: 18px; height: 18px; margin: 2px 0 0 0">
+<span style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-weight: 600; font-size: 17px">hack</span>
+<span style="font-size: 13px; color: #9AA6C4; line-height: 1.4">Sparse + a naive “stay near the pad” bonus</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #9AA6C4; margin-top: 4px">97% land in zone</span>
+</span>
+</label>
+</div>
+</fieldset>
+
+<div style="border-radius: 16px; overflow: hidden; border: 1px solid #223058; background: #070B18">
+<svg viewBox="0 0 600 400" width="100%" role="img" aria-label="Lunar scene: the rocket descends toward the landing pad with its main engine firing" style="display: block">
+<rect width="600" height="400" fill="#070B18"></rect>
+<g fill="#FFFFFF">
+<circle cx="24" cy="30" r="0.9" opacity="0.8"></circle><circle cx="58" cy="112" r="0.6" opacity="0.5"></circle><circle cx="96" cy="64" r="1.1" opacity="0.9"></circle><circle cx="140" cy="190" r="0.6" opacity="0.4"></circle><circle cx="166" cy="40" r="0.7" opacity="0.6"></circle><circle cx="204" cy="128" r="1" opacity="0.7"></circle><circle cx="230" cy="22" r="0.6" opacity="0.5"></circle><circle cx="276" cy="96" r="0.8" opacity="0.6"></circle><circle cx="318" cy="34" r="1.2" opacity="0.9"></circle><circle cx="352" cy="150" r="0.6" opacity="0.4"></circle><circle cx="388" cy="72" r="0.9" opacity="0.7"></circle><circle cx="430" cy="20" r="0.6" opacity="0.5"></circle><circle cx="452" cy="132" r="1" opacity="0.8"></circle><circle cx="478" cy="210" r="0.6" opacity="0.4"></circle><circle cx="560" cy="150" r="0.8" opacity="0.6"></circle><circle cx="584" cy="40" r="1.1" opacity="0.9"></circle><circle cx="40" cy="200" r="0.7" opacity="0.5"></circle><circle cx="12" cy="150" r="0.6" opacity="0.4"></circle><circle cx="110" cy="236" r="0.6" opacity="0.4"></circle><circle cx="420" cy="230" r="0.7" opacity="0.5"></circle><circle cx="540" cy="226" r="0.6" opacity="0.4"></circle><circle cx="250" cy="200" r="0.5" opacity="0.4"></circle>
+</g>
+<circle cx="526" cy="78" r="26" fill="#161E3D"></circle>
+<circle cx="518" cy="70" r="6" fill="#1D2650"></circle>
+<circle cx="534" cy="88" r="4" fill="#1D2650"></circle>
+
+<rect x="120" y="4" width="360" height="158" rx="6" fill="#5CC8FF" fill-opacity="0.04" stroke="#5CC8FF" stroke-opacity="0.4" stroke-dasharray="4 4"></rect>
+<text x="128" y="18" font-family="JetBrains Mono, monospace" font-size="8" fill="#7FB4DA" letter-spacing="1">LAUNCH ZONE · CLICK TO DROP</text>
+
+<polygon points="0,400 0,268 60,284 120,262 180,290 240,300 300,300 360,300 420,286 480,266 540,280 600,256 600,400" fill="#1E2440"></polygon>
+<polyline points="0,268 60,284 120,262 180,290 240,300 300,300 360,300 420,286 480,266 540,280 600,256" fill="none" stroke="#4A5580" stroke-width="1.5" stroke-linejoin="round"></polyline>
+<ellipse cx="80" cy="320" rx="18" ry="4" fill="#171C34"></ellipse>
+<ellipse cx="160" cy="350" rx="10" ry="2.5" fill="#171C34"></ellipse>
+<ellipse cx="460" cy="330" rx="22" ry="5" fill="#171C34"></ellipse>
+<ellipse cx="560" cy="300" rx="9" ry="2.5" fill="#171C34"></ellipse>
+
+<rect x="240" y="298" width="120" height="4" rx="1" fill="#5CC8FF"></rect>
+<line x1="240" y1="298" x2="240" y2="262" stroke="#C9D2E3" stroke-width="1.5"></line>
+<line x1="360" y1="298" x2="360" y2="262" stroke="#C9D2E3" stroke-width="1.5"></line>
+<polygon points="240,262 254,266 240,270" fill="#FFB547"></polygon>
+<polygon points="360,262 374,266 360,270" fill="#FFB547"></polygon>
+<circle cx="240" cy="260" r="4" fill="#FF6B6B" opacity="0.25"></circle><circle cx="240" cy="260" r="1.8" fill="#FF6B6B"></circle>
+<circle cx="360" cy="260" r="4" fill="#FF6B6B" opacity="0.25"></circle><circle cx="360" cy="260" r="1.8" fill="#FF6B6B"></circle>
+
+<circle cx="252" cy="56" r="4" fill="none" stroke="#5CC8FF" stroke-opacity="0.7"></circle>
+<path d="M252,56 C258,110 290,150 300,196" fill="none" stroke="#5CC8FF" stroke-opacity="0.55" stroke-width="1.2" stroke-dasharray="1.5 5" stroke-linecap="round"></path>
+
+<g fill="#FFB547">
+<circle cx="298" cy="246" r="1.8" opacity="0.7"></circle><circle cx="304" cy="254" r="1.4" opacity="0.5"></circle><circle cx="295" cy="262" r="1.1" opacity="0.35"></circle><circle cx="302" cy="270" r="0.9" opacity="0.2"></circle>
+</g>
+<g transform="translate(300 206) rotate(6) scale(1.1)">
+<path d="M-8,10 Q0,46 8,10 Z" fill="#FF8A3D" opacity="0.9"></path>
+<path d="M-5,10 Q0,32 5,10 Z" fill="#FFD27A"></path>
+<path d="M-2.5,10 Q0,20 2.5,10 Z" fill="#FFF6DA"></path>
+<line x1="-11" y1="7" x2="-24" y2="24" stroke="#9AA6BD" stroke-width="3" stroke-linecap="round"></line>
+<line x1="11" y1="7" x2="24" y2="24" stroke="#9AA6BD" stroke-width="3" stroke-linecap="round"></line>
+<rect x="-29" y="23" width="10" height="3" rx="1.5" fill="#C9D2E3"></rect>
+<rect x="19" y="23" width="10" height="3" rx="1.5" fill="#C9D2E3"></rect>
+<polygon points="-14,-17 -17,0 -17,10 17,10 17,0 14,-17" fill="#E8ECF4" stroke="#9AA6BD" stroke-width="1.5"></polygon>
+<rect x="-17" y="2" width="34" height="3" fill="#FF8A3D"></rect>
+<circle cx="0" cy="-6" r="5" fill="#1B2A4A" stroke="#5CC8FF" stroke-width="1.5"></circle>
+<path d="M17,-12 Q34,-9 17,-5 Z" fill="#9FE3FF" opacity="0.9"></path>
+<path d="M17,-10.5 Q26,-8.5 17,-6.5 Z" fill="#E6F8FF"></path>
+</g>
+
+<g font-family="JetBrains Mono, monospace">
+<rect x="10" y="10" width="100" height="84" rx="6" fill="#0F1630" fill-opacity="0.9" stroke="#223058"></rect>
+<text x="18" y="24" font-size="7" fill="#9AA6C4" letter-spacing="1">SCORE</text>
+<text x="18" y="44" font-size="20" font-weight="600" fill="#4ADE80">+142</text>
+<text x="18" y="60" font-size="7" fill="#9AA6C4">ALT</text><text x="60" y="60" font-size="7" fill="#E6EAF5">0.42</text>
+<text x="18" y="71" font-size="7" fill="#9AA6C4">SPEED</text><text x="60" y="71" font-size="7" fill="#E6EAF5">0.31</text>
+<text x="18" y="82" font-size="7" fill="#9AA6C4">TILT</text><text x="60" y="82" font-size="7" fill="#E6EAF5">6°</text>
+<text x="18" y="93" font-size="7" fill="#9AA6C4">FUEL</text><text x="60" y="93" font-size="7" fill="#E6EAF5">18.6</text>
+<text x="590" y="20" font-size="8" fill="#9AA6C4" text-anchor="end">STEP 214 / 1000</text>
+</g>
+</svg>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<p style="margin: 0; font-size: 16px; color: #E6EAF5"><strong style="color: #5CC8FF">pbrs</strong> is descending from (−0.17, 1.21). Main engine on.</p>
+<div style="display: flex; gap: 10px; align-items: center">
+<button type="button" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid #223058; background: #0F1630; color: #E6EAF5; font: 500 15px 'Space Grotesk', sans-serif; cursor: pointer">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 3v6h6"></path></svg>
+Replay
+</button>
+<div role="radiogroup" aria-label="Playback speed" style="display: flex; border: 1px solid #223058; border-radius: 10px; overflow: hidden">
+<label style="min-height: 44px; min-width: 52px; display: flex; align-items: center; justify-content: center; background: #5CC8FF; color: #070B18; font: 600 15px 'JetBrains Mono', monospace; cursor: pointer"><input type="radio" name="speed" checked="checked" style="position: absolute; opacity: 0; width: 1px; height: 1px">1×</label>
+<label style="min-height: 44px; min-width: 52px; display: flex; align-items: center; justify-content: center; background: #0F1630; color: #E6EAF5; font: 600 15px 'JetBrains Mono', monospace; cursor: pointer"><input type="radio" name="speed" style="position: absolute; opacity: 0; width: 1px; height: 1px">2×</label>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1180}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

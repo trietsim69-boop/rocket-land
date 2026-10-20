@@ -12,6 +12,7 @@ Read both before starting work; tick boxes in `todo.md` when a task's verificati
 - Python 3.11 or 3.12 (box2d wheels are unreliable on 3.13), venv in `.venv/`
 - `gymnasium[box2d]`, `stable-baselines3` (PPO, discrete actions), `matplotlib`, `imageio`, `gradio`
 - Windows dev machine: if `box2d` fails to build, `pip install swig` first, then reinstall `gymnasium[box2d]`
+- Edit text files with the Edit tool or Python (`encoding="utf-8"`). PowerShell 5.1 `Get-Content`/`Set-Content` re-encodes UTF-8 as cp1252 and mangles the ≥ − Φ γ in `tasks/*.md`.
 
 ## Commands
 - Setup: `python -m venv .venv && .venv\Scripts\activate && pip install -r requirements.txt`
@@ -42,7 +43,7 @@ Read both before starting work; tick boxes in `todo.md` when a task's verificati
 - App input is untrusted: clamp click coords into the allowed sky region, cap episodes at 1000 steps.
 
 ## Boundaries
-- Ask before starting any training run longer than ~30 min, or a multi-run sweep.
+- Ask before starting any training run longer than ~30 min, or a multi-run sweep. Measured on this machine: 1M steps ≈ 13 min solo; 2M ≈ 16–19 min each with 4 runs in parallel (`OMP_NUM_THREADS=2`).
 - Don't commit `runs/`, `.venv/`, or checkpoint dumps; only the app's models in `models/` (keep under ~50 MB total).
 - Commits use the repo owner's own git identity (Triet Le). No Claude author or co-author lines.
 - Don't add dependencies beyond the stack above without asking.

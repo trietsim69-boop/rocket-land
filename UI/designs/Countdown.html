@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Launch countdown</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1280px; height: 440px; box-sizing: border-box; padding: 32px; background: #070B18; color: #E6EAF5; font-family: 'Space Grotesk', system-ui, sans-serif; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 24px; font-weight: 600">Launch countdown</h2>
+<p style="margin: 0; font-size: 14px; color: #9AA6C4">Request goes out on click. Launch waits for the real episode data.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px">
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="border-radius: 12px; overflow: hidden; border: 1px solid #223058">
+<svg viewBox="0 0 200 150" width="100%" role="img" aria-label="T minus 3 with ghost rocket at the clicked spot">
+<rect width="200" height="150" fill="#070B18"></rect>
+<circle cx="30" cy="20" r="0.7" fill="#fff" opacity="0.7"></circle><circle cx="170" cy="34" r="0.8" fill="#fff" opacity="0.6"></circle><circle cx="140" cy="12" r="0.6" fill="#fff" opacity="0.5"></circle>
+<polygon points="0,150 0,130 50,136 80,140 120,140 150,134 200,128 200,150" fill="#1E2440"></polygon>
+<g transform="translate(100 52) scale(0.9)" fill="none" stroke="#5CC8FF" stroke-width="1.4" stroke-dasharray="3 3" opacity="0.7">
+<line x1="-11" y1="7" x2="-24" y2="24"></line><line x1="11" y1="7" x2="24" y2="24"></line>
+<polygon points="-14,-17 -17,0 -17,10 17,10 17,0 14,-17"></polygon>
+</g>
+<circle cx="100" cy="52" r="26" fill="none" stroke="#5CC8FF" stroke-opacity="0.35"></circle>
+<text x="100" y="118" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" font-size="30" fill="#E6EAF5">T-3</text>
+</svg>
+</div>
+<span style="font-weight: 600; font-size: 15px">Click · T-3</span>
+<span style="font-size: 13px; color: #9AA6C4; line-height: 1.4">Ghost appears at the clicked spot, ring pulses. Request sent now.</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="border-radius: 12px; overflow: hidden; border: 1px solid #223058">
+<svg viewBox="0 0 200 150" width="100%" role="img" aria-label="T minus 2, ghost rocket brighter">
+<rect width="200" height="150" fill="#070B18"></rect>
+<circle cx="30" cy="20" r="0.7" fill="#fff" opacity="0.7"></circle><circle cx="170" cy="34" r="0.8" fill="#fff" opacity="0.6"></circle><circle cx="140" cy="12" r="0.6" fill="#fff" opacity="0.5"></circle>
+<polygon points="0,150 0,130 50,136 80,140 120,140 150,134 200,128 200,150" fill="#1E2440"></polygon>
+<g transform="translate(100 52) scale(0.9)" fill="none" stroke="#5CC8FF" stroke-width="1.6" stroke-dasharray="3 2" opacity="0.85">
+<line x1="-11" y1="7" x2="-24" y2="24"></line><line x1="11" y1="7" x2="24" y2="24"></line>
+<polygon points="-14,-17 -17,0 -17,10 17,10 17,0 14,-17"></polygon>
+</g>
+<circle cx="100" cy="52" r="21" fill="none" stroke="#5CC8FF" stroke-opacity="0.5"></circle>
+<text x="100" y="118" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" font-size="30" fill="#E6EAF5">T-2</text>
+</svg>
+</div>
+<span style="font-weight: 600; font-size: 15px">T-2 · +0.6 s</span>
+<span style="font-size: 13px; color: #9AA6C4; line-height: 1.4">Ghost firms up, ring tightens. Episode runs on the server.</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="border-radius: 12px; overflow: hidden; border: 1px solid #223058">
+<svg viewBox="0 0 200 150" width="100%" role="img" aria-label="T minus 1, ghost nearly solid">
+<rect width="200" height="150" fill="#070B18"></rect>
+<circle cx="30" cy="20" r="0.7" fill="#fff" opacity="0.7"></circle><circle cx="170" cy="34" r="0.8" fill="#fff" opacity="0.6"></circle><circle cx="140" cy="12" r="0.6" fill="#fff" opacity="0.5"></circle>
+<polygon points="0,150 0,130 50,136 80,140 120,140 150,134 200,128 200,150" fill="#1E2440"></polygon>
+<g transform="translate(100 52) scale(0.9)">
+<line x1="-11" y1="7" x2="-24" y2="24" stroke="#9AA6BD" stroke-width="3" stroke-linecap="round" opacity="0.5"></line>
+<line x1="11" y1="7" x2="24" y2="24" stroke="#9AA6BD" stroke-width="3" stroke-linecap="round" opacity="0.5"></line>
+<polygon points="-14,-17 -17,0 -17,10 17,10 17,0 14,-17" fill="#E8ECF4" fill-opacity="0.4" stroke="#5CC8FF" stroke-width="1.5"></polygon>
+</g>
+<circle cx="100" cy="52" r="16" fill="none" stroke="#5CC8FF" stroke-opacity="0.7"></circle>
+<text x="100" y="118" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" font-size="30" fill="#E6EAF5">T-1</text>
+</svg>
+</div>
+<span style="font-weight: 600; font-size: 15px">T-1 · +1.2 s</span>
+<span style="font-size: 13px; color: #9AA6C4; line-height: 1.4">Hull fades in. Data usually arrived by now.</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="border-radius: 12px; overflow: hidden; border: 1.5px solid #FFB547">
+<svg viewBox="0 0 200 150" width="100%" role="img" aria-label="Ignition, rocket solid with engine lit">
+<rect width="200" height="150" fill="#070B18"></rect>
+<circle cx="30" cy="20" r="0.7" fill="#fff" opacity="0.7"></circle><circle cx="170" cy="34" r="0.8" fill="#fff" opacity="0.6"></circle><circle cx="140" cy="12" r="0.6" fill="#fff" opacity="0.5"></circle>
+<polygon points="0,150 0,130 50,136 80,140 120,140 150,134 200,128 200,150" fill="#1E2440"></polygon>
+<circle cx="100" cy="66" r="22" fill="#FFB547" opacity="0.12"></circle>
+<g transform="translate(100 52) scale(0.9)">
+<path d="M-8,10 Q0,46 8,10 Z" fill="#FF8A3D" opacity="0.9"></path>
+<path d="M-5,10 Q0,32 5,10 Z" fill="#FFD27A"></path>
+<line x1="-11" y1="7" x2="-24" y2="24" stroke="#9AA6BD" stroke-width="3" stroke-linecap="round"></line>
+<line x1="11" y1="7" x2="24" y2="24" stroke="#9AA6BD" stroke-width="3" stroke-linecap="round"></line>
+<rect x="-29" y="23" width="10" height="3" rx="1.5" fill="#C9D2E3"></rect>
+<rect x="19" y="23" width="10" height="3" rx="1.5" fill="#C9D2E3"></rect>
+<polygon points="-14,-17 -17,0 -17,10 17,10 17,0 14,-17" fill="#E8ECF4" stroke="#9AA6BD" stroke-width="1.5"></polygon>
+<rect x="-17" y="2" width="34" height="3" fill="#FF8A3D"></rect>
+<circle cx="0" cy="-6" r="5" fill="#1B2A4A" stroke="#5CC8FF" stroke-width="1.5"></circle>
+</g>
+<text x="100" y="138" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" font-size="18" fill="#FFB547" letter-spacing="2">IGNITION</text>
+</svg>
+</div>
+<span style="font-weight: 600; font-size: 15px">T-0 · +1.8 s</span>
+<span style="font-size: 13px; color: #9AA6C4; line-height: 1.4">Rocket goes solid, flame lights, replay starts from step 0.</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="border-radius: 12px; overflow: hidden; border: 1px dashed #5CC8FF">
+<svg viewBox="0 0 200 150" width="100%" role="img" aria-label="Holding at T minus 1 while the server is busy">
+<rect width="200" height="150" fill="#070B18"></rect>
+<circle cx="30" cy="20" r="0.7" fill="#fff" opacity="0.7"></circle><circle cx="170" cy="34" r="0.8" fill="#fff" opacity="0.6"></circle><circle cx="140" cy="12" r="0.6" fill="#fff" opacity="0.5"></circle>
+<polygon points="0,150 0,130 50,136 80,140 120,140 150,134 200,128 200,150" fill="#1E2440"></polygon>
+<g transform="translate(100 52) scale(0.9)">
+<line x1="-11" y1="7" x2="-24" y2="24" stroke="#9AA6BD" stroke-width="3" stroke-linecap="round" opacity="0.5"></line>
+<line x1="11" y1="7" x2="24" y2="24" stroke="#9AA6BD" stroke-width="3" stroke-linecap="round" opacity="0.5"></line>
+<polygon points="-14,-17 -17,0 -17,10 17,10 17,0 14,-17" fill="#E8ECF4" fill-opacity="0.4" stroke="#5CC8FF" stroke-width="1.5"></polygon>
+</g>
+<circle cx="100" cy="52" r="16" fill="none" stroke="#5CC8FF" stroke-opacity="0.7"></circle>
+<circle cx="100" cy="52" r="24" fill="none" stroke="#5CC8FF" stroke-opacity="0.2"></circle>
+<text x="100" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" font-size="22" fill="#E6EAF5">T-1</text>
+<text x="100" y="132" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#5CC8FF">FUELLING · 2 AHEAD</text>
+</svg>
+</div>
+<span style="font-weight: 600; font-size: 15px">Hold (busy server)</span>
+<span style="font-size: 13px; color: #9AA6C4; line-height: 1.4">Stays on T-1, shows queue position. Launches the instant data lands.</span>
+</div>
+
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="position: relative; height: 8px; border-radius: 4px; background: #0F1630; border: 1px solid #223058; overflow: hidden">
+<div style="position: absolute; left: 0; top: 0; bottom: 0; width: 22%; background: #5CC8FF; opacity: 0.8"></div>
+<div style="position: absolute; left: 22%; top: 0; bottom: 0; width: 78%; background: #5CC8FF; opacity: 0.18"></div>
+</div>
+<div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #9AA6C4">
+<span>server episode ≈ 0.3–0.5 s (measure in Step 1)</span>
+<span>countdown 3 × 0.6 s, tick length tuned to real server time</span>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":440}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

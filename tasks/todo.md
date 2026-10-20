@@ -161,6 +161,8 @@
 ## Task 11: Deploy + README
 **Description:** Push to a Hugging Face Space (Gradio SDK, pinned Python with working box2d; model zips under ~50 MB total). README: reward shaping explained, conditions, Φ used, curves + heatmaps + GIFs, link to source `lunar_lander.py`, Space link, reproduce commands.
 
+**Blocked on the owner (asked, unanswered as of 2026-10-20):** (1) HF username + Space name, and whether Claude pushes (`huggingface-cli login` done?) or only prepares files; (2) merge `front-end` into `main` first, or deploy from `front-end`. Work so far lives on branch `front-end`, all committed.
+
 **Acceptance criteria:**
 - [ ] Space builds and works from a logged-out browser
 - [ ] README reproduces results from a fresh clone

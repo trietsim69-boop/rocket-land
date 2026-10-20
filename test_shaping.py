@@ -128,9 +128,11 @@ def test_click_mapping():
 
 def test_trajectory():
     """Replaying the trajectory's actions on a fresh env ends on the same step with the same true score."""
-    from app import APP_SEED, trajectory
+    from app import APP_SEED, obs_to_pixel, trajectory
 
-    tr = trajectory({"x": -0.4, "y": 1.2, "agent": "default"})
+    px, py = obs_to_pixel(-0.4, 1.2)
+    tr = trajectory({"px": px, "py": py, "agent": "default"})
+    assert np.allclose(tr["start"], (-0.4, 1.2), atol=0.01) and not tr["clamped"]
     env = StartPosition(gym.make("LunarLander-v3"))
     env.reset(seed=APP_SEED, options={"start": tuple(tr["start"])})
     total, done, steps = 0.0, False, 0

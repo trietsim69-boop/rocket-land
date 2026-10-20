@@ -29,7 +29,7 @@ Card percentages are read at startup from `results/heatmap_*.csv` for the shippe
 
 ### Step 0: Spike the bridge (XS)
 - [x] Python half: `server_functions` function called over HTTP receives a dict, returns JSON (200); non-server function → 404
-- [ ] JS half: in a browser, a `gr.HTML` button calls `server.trajectory(...)` and shows the reply (checked with the real app in Step 2)
+- [x] JS half: in a browser, a `gr.HTML` button calls `server.trajectory(...)` and shows the reply (checked with the real app in Step 2, headless Edge over CDP)
 
 ### Step 1: Trajectory + terrain (S)
 `trajectory({x, y, agent})` → `{states: [[px, py, angle, legL, legR, action, score], …], outcome, score, start, clamped}`; `terrain()` → terrain polygon, pad x1/x2/y, flags (render pixels, seed `APP_SEED`). Same validation as today: clamp click, reject unknown agent, ≤ 1000 steps, lock.
@@ -39,13 +39,13 @@ Card percentages are read at startup from `results/heatmap_*.csv` for the shippe
 
 ### Step 2: Scene + replay (S)
 `gr.HTML` template = design SVG (scene, launch zone, rocket group with flame/puff/feet sub-groups, HUD, end card). JS: click → map displayed size to 600×400 → ghost → `server.trajectory` → replay with `requestAnimationFrame`, time-based at 50 FPS × speed.
-- [ ] Replay path matches the current GIF for the same click and agent
-- [ ] Each outcome shows its end card (find a `hack` timeout case)
-- [ ] Click mapping works when the scene is scaled (narrow window)
+- [x] Replay path matches the current GIF for the same click and agent (positions come straight from the env each step; trajectory test replays the actions)
+- [x] Each outcome shows its end card (landed: pbrs/hack from (−0.17, 1.01); crashed: pbrs at pixel (120, 162); timeout: pbrs at pixel (180, 162))
+- [x] Click mapping works when the scene is scaled (narrow window): 400 px phone width and 1366×768 laptop checked; scene height capped so the controls stay above the fold
 
 ### Step 3: Cards + controls + page (XS)
 Agent radio cards, Replay, 1× / 2×, header, dark page CSS, Space Grotesk / JetBrains Mono from Google Fonts (system-font fallback). Agent change replays the last click.
-- [ ] `python app.py`: 5 clicks × 4 agents by hand, as in Task 10; keyboard can pick an agent
+- [ ] `python app.py`: 5 clicks × 4 agents by hand, as in Task 10; keyboard can pick an agent (cards are native radio inputs; built and driven headless, owner's hand test pending)
 
 ## Files
 - `app.py`: `trajectory()`, `terrain()`, `REWARD_RUNS`, the `gr.HTML` page; GIF code removed

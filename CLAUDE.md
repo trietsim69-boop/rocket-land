@@ -26,7 +26,7 @@ Read both before starting work; tick boxes in `todo.md` when a task's verificati
 - `env.py`: custom/random start position via `reset(options={"start": (x, y)})`
 - `train.py`: train + periodic eval → `runs/{reward}_s{seed}/eval.csv`, checkpoints, `model.zip`
 - `plot.py`: learning curves, success heatmaps, progression strip → `results/`
-- `app.py`: `land(x, y, agent)` + Gradio UI
+- `app.py`: `trajectory()` server function + one `gr.HTML` page (SVG scene + JS replay, design from `UI/designs/`)
 - `test_shaping.py`: the single assert-based check file
 - `models/`: the few final models the app ships (committed); `runs/` is scratch (gitignored)
 

@@ -1,21 +1,8 @@
----
-title: Rocket Land
-emoji: 🚀
-colorFrom: indigo
-colorTo: blue
-sdk: gradio
-sdk_version: 6.30.0
-python_version: "3.12"
-app_file: app.py
-pinned: false
-short_description: Click the sky, pick a reward, watch an RL agent land
----
-
 # Rocket Land
 
 Reinforcement-learning agents land Gymnasium's [`LunarLander-v3`](https://github.com/Farama-Foundation/Gymnasium/blob/main/gymnasium/envs/box2d/lunar_lander.py). The project trains the same PPO agent under four reward designs, scores all of them on the same true score, and ships a web app: click a spot in the sky, pick an agent, and watch it land from there.
 
-**Live app:** _Hugging Face Space link goes here after deploy._
+**Live app:** _link goes here after deploy (Render free web service)._
 
 ![Training progression: untrained, mid-training, and final pbrs agent, above its learning curve](results/progression.gif)
 
@@ -53,7 +40,7 @@ All numbers live in [`results/summary.md`](results/summary.md), generated from t
 
 ## The app
 
-[`app.py`](app.py) runs the real Box2D episode with the real policy on the server and sends back a trajectory (position, angle, leg contacts, action, running true score per step). The page draws it as SVG in the browser. Each agent in the app is the best of its three seeds inside the click zone; the "land in zone" figure on each card is read from `results/heatmap_*.csv`.
+[`app.py`](app.py) runs the real Box2D episode on the server, with each trained policy's weights exported to numpy (`train.py --export`) so serving needs no torch, and sends back a trajectory (position, angle, leg contacts, action, running true score per step). The page draws it as SVG in the browser. Each agent in the app is the best of its three seeds inside the click zone; the "land in zone" figure on each card is read from `results/heatmap_*.csv`.
 
 ## Reproduce
 
@@ -67,5 +54,7 @@ python train.py --reward pbrs --seed 0 --random-start --steps 2000000   # one ru
 python plot.py                                       # results/ from runs/*/eval.csv
 python app.py                                        # http://localhost:7860
 ```
+
+Serving only needs `pip install -r requirements-app.txt` (Gymnasium, Gradio, NumPy). After retraining a shipped model, refresh its weights with `python train.py --export models/<reward>.zip`.
 
 `train.py --reward {default,sparse,pbrs,hack} --seed N --steps N [--random-start] [--gae-lambda L]` writes `runs/{reward}_s{seed}[_rand]/eval.csv`, a checkpoint per evaluation, and `model.zip`. The full random-start sweep is 4 rewards × seeds 0–2 × 2M steps.

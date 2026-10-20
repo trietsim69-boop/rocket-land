@@ -161,7 +161,7 @@
 ## Task 11: Deploy + README
 **Description:** Push to a Hugging Face Space (Gradio SDK, pinned Python with working box2d; model zips under ~50 MB total). README: reward shaping explained, conditions, Φ used, curves + heatmaps + GIFs, link to source `lunar_lander.py`, Space link, reproduce commands.
 
-**Decided 2026-10-20:** README written (front matter = Space config). Owner pushes the Space with `hf upload` (app.py, env.py, requirements.txt, README.md, models/, results/). Owner merges `front-end` → `main` via PR. `runs/*/eval.csv` committed so `plot.py` works from a clone; `plot.py` now refuses to run without them instead of blanking results/.
+**Decided 2026-10-20:** README written (front matter = Space config). HF Spaces now needs PRO for Gradio apps, so hosting moved to a Render free web service (512 MB): app serves with numpy policies (`models/*.npz`, ~140 MB RAM vs ~370 MB with torch), deps in `requirements-app.txt`, Python pinned by `.python-version`. Owner merges `front-end` → `main` via PR. `runs/*/eval.csv` committed so `plot.py` works from a clone; `plot.py` now refuses to run without them instead of blanking results/.
 
 **Acceptance criteria:**
 - [ ] Space builds and works from a logged-out browser

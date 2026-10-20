@@ -1,0 +1,4 @@
+# Serving only (app.py runs the policies with numpy, no torch). Training/plots: requirements.txt
+gymnasium[box2d]==1.4.0
+gradio==6.30.0
+numpy==2.5.4

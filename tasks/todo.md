@@ -133,11 +133,11 @@
 **Description:** In `app.py` (or `env.py`): load model, run one deterministic episode from `(x, y)`, return frames + outcome (`landed` / `crashed` / `timeout`) + true score. Each frame gets a running SCORE overlay (green ≥ 0, red < 0). Models loaded once at startup.
 
 **Acceptance criteria:**
-- [ ] Returns within ~2 s on CPU
-- [ ] Outcome matches the episode's terminal reward
+- [x] Returns within ~2 s on CPU (1.9–2.4 s incl. GIF encode)
+- [x] Outcome matches the episode's terminal reward
 
 **Verification:**
-- [ ] `python -c "from app import land; print(land(0.3, 0.8, 'pbrs')[1:])"`
+- [x] `python -c "from app import land; print(land(0.3, 0.8, 'pbrs')[1:])"`
 
 **Dependencies:** 8
 **Files:** `app.py`
@@ -147,15 +147,15 @@
 **Description:** Background image of the empty scene; `gr.Image(...).select` gives click pixel → map to env coords → `land()` → show GIF + outcome text. Dropdown chooses agent. Queue so runs don't overlap.
 
 **Acceptance criteria:**
-- [ ] Clicking anywhere in the sky plays a landing from that spot
-- [ ] Clicks outside the allowed region are clamped (and the user is told)
-- [ ] Switching agent from same click shows different behavior
+- [x] Clicking anywhere in the sky plays a landing from that spot
+- [x] Clicks outside the allowed region are clamped (and the user is told)
+- [x] Switching agent from same click shows different behavior (dropdown change replays the last click)
 
 **Verification:**
-- [ ] `python app.py`; click 5 spots across the sky with each agent
+- [x] `python app.py`; click 5 spots across the sky with each agent (tested by hand)
 
 **Dependencies:** 9
-**Files:** `app.py`, `assets/background.png`
+**Files:** `app.py` (background rendered from the env at startup, no assets file)
 **Scope:** S
 
 ## Task 11: Deploy + README

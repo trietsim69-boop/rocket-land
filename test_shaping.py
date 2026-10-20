@@ -111,10 +111,26 @@ def test_start_position():
     assert np.allclose(a, b) and X_RANGE[0] <= a[0] <= X_RANGE[1]  # random start is seeded + in region
 
 
+def test_click_mapping():
+    from gymnasium.envs.box2d.lunar_lander import SCALE, VIEWPORT_H
+
+    from app import CLICK_X, clamp_click, pixel_to_obs
+
+    env = StartPosition(gym.make("LunarLander-v3"))
+    for start in [(0.0, 1.0), (-0.6, 0.6), (0.55, 1.4)]:
+        obs, _ = env.reset(seed=0, options={"start": start})
+        pos = env.unwrapped.lander.position
+        assert np.allclose(pixel_to_obs(pos.x * SCALE, VIEWPORT_H - pos.y * SCALE), obs[:2], atol=1e-3)
+    x, y, clamped = clamp_click(5, -3)
+    assert clamped and CLICK_X[0] <= x <= CLICK_X[1] and Y_RANGE[0] <= y <= Y_RANGE[1]
+    assert not clamp_click(0.2, 1.0)[2]
+
+
 if __name__ == "__main__":
     test_sparse_decomposition()
     test_monitor_sees_true_score()
     test_pbrs_telescopes()
     test_hack_bonus_only_near_pad()
     test_start_position()
+    test_click_mapping()
     print("ok")

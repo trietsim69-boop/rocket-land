@@ -56,7 +56,7 @@ env installs (box2d)
 
 ### Phase 3: Land from anywhere
 - [x] Task 7: Custom start position via `reset(options={"start": ...})`
-- [ ] Task 8: Random-start sweep (conditions × seeds) + learning curves + success heatmap
+- [x] Task 8: Random-start sweep (conditions × seeds) + learning curves + success heatmap
 - [ ] Task 9: `land(x, y, agent)` inference function
 
 ### Checkpoint C: chosen agents land from most of the sky

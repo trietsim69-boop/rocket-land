@@ -93,7 +93,7 @@
 
 ### Checkpoint B
 - [x] All 4 conditions run on seed 0, each with a one-line explanation
-- [ ] Decide step budget + seeds for the random-start sweep
+- [x] Decide step budget + seeds for the random-start sweep: 2M steps × seeds 0–2 (pbrs plateaus ~1.3M)
 
 ## Task 7: Custom start position
 **Description:** Small subclass/wrapper (`env.py`): `reset(options={"start": (x, y)})` moves lander body + both legs by the same offset after the normal reset, zeroes velocities, returns a recomputed observation. No start → uniform random start in an allowed sky region (above terrain, inside viewport, below spawn ceiling). Invalid coords → clamped into the region.
@@ -114,12 +114,12 @@
 **Description:** Train each condition × seeds with random starts (background, sequential). `plot.py`: mean ± std true-score curves (200 line), final score/success table, and a success-rate heatmap over a start-position grid (e.g. 8×5, 10 episodes per cell) per condition.
 
 **Acceptance criteria:**
-- [ ] All runs complete; `results/learning_curves.png`, `results/heatmap_{reward}.png`, `results/summary.md` generated from saved data only
-- [ ] Best agent (expected `pbrs`) ≥ 80% success over the clickable region
-- [ ] `results/progression.gif`: rollouts from checkpoints at ~episode 1 / 500 / 3000 side by side, above the learning curve with matching markers
+- [x] All runs complete; `results/learning_curves.png`, `results/heatmap_{reward}.png`, `results/summary.md` generated from saved data only (4 conditions × seeds 0–2, 2M steps, random starts, λ=0.9; 4 parallel runs ≈ 50 min)
+- [x] Best agent (expected `pbrs`) ≥ 80% success over the clickable region: on the full 8×5 grid `hack` 85% ± 6, `default` 80% ± 10, `pbrs` 74% ± 4, `sparse` 58% ± 18. The grid gives the extreme columns (x = ±0.8) a quarter of the weight, where pbrs is weakest (left edge 33–50%). Ad-hoc check on 60 uniform random starts (not in results/): pbrs 54/60 landed, default 51, hack 51, sparse 38; pbrs also has the lowest fuel and shortest episodes. Mean true score plateaus at 100–150 for all, so "first ≥ 200" is never hit on random starts. Clickable region → Checkpoint C.
+- [x] `results/progression.gif`: rollouts from checkpoints side by side, above the learning curve with matching markers. Uses untrained / ep ≈3000 / final (8821) of `pbrs_s0_rand`: on random starts ep 500 and 3000 still crash everywhere, so 1/500/3000 showed no landing.
 
 **Verification:**
-- [ ] `python plot.py`; open PNGs
+- [x] `python plot.py`; open PNGs
 
 **Dependencies:** 5, 6, 7
 **Files:** `train.py`, `plot.py`

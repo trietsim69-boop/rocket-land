@@ -99,12 +99,12 @@
 **Description:** Small subclass/wrapper (`env.py`): `reset(options={"start": (x, y)})` moves lander body + both legs by the same offset after the normal reset, zeroes velocities, returns a recomputed observation. No start → uniform random start in an allowed sky region (above terrain, inside viewport, below spawn ceiling). Invalid coords → clamped into the region.
 
 **Acceptance criteria:**
-- [ ] Lander spawns within 1e-3 of requested `(x, y)`; observation matches the new position
-- [ ] With no-op actions from 10 different starts, the lander falls without joint glitches (legs stay attached)
-- [ ] Out-of-range coords clamp, never raise
+- [x] Lander spawns within 1e-3 of requested `(x, y)`; observation matches the new position (`(x, y)` = obs coords, pad at (0, 0); region x ∈ [−0.8, 0.8], y ∈ [0.6, 1.4])
+- [x] With no-op actions from 10 different starts, the lander falls without joint glitches (legs stay attached): joint gap 0 until first contact; crash impact stretches joints in the stock env too (up to 0.43), so that's excluded
+- [x] Out-of-range coords clamp, never raise (incl. NaN / ±inf)
 
 **Verification:**
-- [ ] `python test_shaping.py` (start-position asserts) + render one no-op drop to GIF and look
+- [x] `python test_shaping.py` (start-position asserts) + render one no-op drop to GIF and look
 
 **Dependencies:** 3
 **Files:** `env.py`, `test_shaping.py`, `train.py` (`--random-start` flag)

@@ -55,7 +55,7 @@ env installs (box2d)
 ### Checkpoint B: each condition shows a distinct, explainable behavior
 
 ### Phase 3: Land from anywhere
-- [ ] Task 7: Custom start position via `reset(options={"start": ...})`
+- [x] Task 7: Custom start position via `reset(options={"start": ...})`
 - [ ] Task 8: Random-start sweep (conditions × seeds) + learning curves + success heatmap
 - [ ] Task 9: `land(x, y, agent)` inference function
 

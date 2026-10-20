@@ -126,6 +126,24 @@ def test_click_mapping():
     assert not clamp_click(0.2, 1.0)[2]
 
 
+def test_trajectory():
+    """Replaying the trajectory's actions on a fresh env ends on the same step with the same true score."""
+    from app import APP_SEED, obs_to_pixel, trajectory
+
+    px, py = obs_to_pixel(-0.4, 1.2)
+    tr = trajectory({"px": px, "py": py, "agent": "default"})
+    assert np.allclose(tr["start"], (-0.4, 1.2), atol=0.01) and not tr["clamped"]
+    env = StartPosition(gym.make("LunarLander-v3"))
+    env.reset(seed=APP_SEED, options={"start": tuple(tr["start"])})
+    total, done, steps = 0.0, False, 0
+    for state in tr["states"][1:]:
+        assert not done
+        _, r, term, trunc, _ = env.step(state[5])
+        total, done, steps = total + r, term or trunc, steps + 1
+    assert done and steps == len(tr["states"]) - 1
+    assert abs(total - tr["score"]) < 0.06 and abs(tr["states"][-1][6] - tr["score"]) < 0.06
+
+
 if __name__ == "__main__":
     test_sparse_decomposition()
     test_monitor_sees_true_score()
@@ -133,4 +151,5 @@ if __name__ == "__main__":
     test_hack_bonus_only_near_pad()
     test_start_position()
     test_click_mapping()
+    test_trajectory()
     print("ok")

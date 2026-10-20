@@ -1,4 +1,6 @@
 .venv/
 __pycache__/
-runs/
+runs/**
+!runs/**/
+!runs/**/eval.csv
 *.pyc

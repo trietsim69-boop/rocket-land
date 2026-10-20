@@ -189,12 +189,14 @@ def progression():
 
 
 if __name__ == "__main__":
+    if not glob.glob("runs/*/eval.csv"):  # e.g. a fresh clone: don't overwrite the committed results/ with empty ones
+        raise SystemExit("plot.py: no runs/*/eval.csv found, nothing to plot. Train first (train.py) or keep results/ as committed.")
     os.makedirs(OUT, exist_ok=True)
     learning_curves()
     heat = {reward: heatmap_rows(reward) for reward in REWARDS if rand_runs(reward)}
     for reward, rows in heat.items():
         heatmap(reward, rows)
     summary(heat)
-    if os.path.exists(PROGRESSION["run"]):
+    if glob.glob(f"{PROGRESSION['run']}/ckpt_*.zip"):  # checkpoints are never committed, so a clone keeps the committed GIF
         progression()
     print("wrote", sorted(os.listdir(OUT)))

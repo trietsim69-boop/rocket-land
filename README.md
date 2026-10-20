@@ -2,7 +2,7 @@
 
 Reinforcement-learning agents land Gymnasium's [`LunarLander-v3`](https://github.com/Farama-Foundation/Gymnasium/blob/main/gymnasium/envs/box2d/lunar_lander.py). The project trains the same PPO agent under four reward designs, scores all of them on the same true score, and ships a web app: click a spot in the sky, pick an agent, and watch it land from there.
 
-**Live app:** _link goes here after deploy (Render free web service)._
+**Live app:** https://rocket-land.onrender.com (free Render instance: after 15 idle minutes the first visit takes about a minute to wake up)
 
 ![Training progression: untrained, mid-training, and final pbrs agent, above its learning curve](results/progression.gif)
 

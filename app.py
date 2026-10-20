@@ -1,5 +1,6 @@
 """Click a spot in the sky, pick an agent, watch it land from there. `python app.py` -> http://localhost:7860"""
 import tempfile
+import threading
 
 import gradio as gr
 import gymnasium as gym
@@ -23,6 +24,9 @@ APP_SEED = 0  # fixed terrain, so every episode matches the background image
 FONT = ImageFont.load_default(size=22)
 W, H = VIEWPORT_W / SCALE, VIEWPORT_H / SCALE
 PAD_Y = H / 4 + LEG_DOWN / SCALE  # world y of obs y = 0 (helipad_y + leg offset, as in the env's obs)
+FUEL = {0: 0.0, 1: 0.03, 2: 0.3, 3: 0.03}  # env's fuel cost per discrete action
+# ponytail: one episode at a time for the whole app (server functions skip Gradio's queue); per-session if it ever queues up
+LOCK = threading.Lock()
 
 
 def pixel_to_obs(px, py):
@@ -55,6 +59,54 @@ def background():
     (x0, y0), (x1, y1) = obs_to_pixel(CLICK_X[0], Y_RANGE[1]), obs_to_pixel(CLICK_X[1], Y_RANGE[0])
     ImageDraw.Draw(img).rectangle((x0, y0, x1, y1), outline=(90, 90, 90), width=2)
     return img
+
+
+def to_pixel(wx, wy):
+    """World (Box2D) -> render pixel, origin top-left."""
+    return round(float(wx) * SCALE, 1), round(VIEWPORT_H - float(wy) * SCALE, 1)
+
+
+def terrain():
+    """Ground polyline + pad in render pixels for APP_SEED (the terrain of every episode). Flags are 50 px tall."""
+    env = make_env()
+    env.reset(seed=APP_SEED)
+    u = env.unwrapped
+    ground = [to_pixel(*p[0]) for p in u.sky_polys] + [to_pixel(*u.sky_polys[-1][1])]
+    (x1, y), (x2, _) = to_pixel(u.helipad_x1, u.helipad_y), to_pixel(u.helipad_x2, u.helipad_y)
+    return {"ground": ground, "pad": {"x1": x1, "x2": x2, "y": y}}
+
+
+def _num(v):
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return float("nan")  # clamp_start turns NaN into the centre of the region
+
+
+def trajectory(req):
+    """Server function for the page JS: {x, y, agent} -> one episode as per-step states, no rendering.
+    State = [px, py, angle, legL, legR, action, score, alt, speed, fuel]; states[0] is the start, then one per step."""
+    agent = req.get("agent") if isinstance(req, dict) else None
+    if agent not in MODELS:  # untrusted: anything can be POSTed to a server function
+        raise gr.Error(f"unknown agent {agent!r}")
+    x, y, clamped = clamp_click(_num(req.get("x")), _num(req.get("y")))
+    with LOCK:
+        env, model = make_env(), MODELS[agent]  # rgb_array env only renders when asked, so no pixels here
+        obs, _ = env.reset(seed=APP_SEED, options={"start": (x, y)})
+        u, a, r, term, score, fuel, done = env.unwrapped, 0, 0.0, False, 0.0, 0.0, False
+        states = []
+        while True:
+            states.append([*to_pixel(*u.lander.position), round(u.lander.angle, 3), int(obs[6]), int(obs[7]), a,
+                           round(score, 1), round(float(obs[1]), 2), round(float(np.hypot(obs[2], obs[3])), 2), round(fuel, 1)])
+            if done:
+                break
+            a = int(model.predict(obs, deterministic=True)[0])
+            obs, r, term, trunc, _ = env.step(a)
+            score += r  # plain env reward = the true score
+            fuel += FUEL[a]
+            done = term or trunc
+    outcome = "landed" if term and r == 100 else "crashed" if term else "timeout"
+    return {"states": states, "outcome": outcome, "score": round(score, 1), "start": [x, y], "clamped": bool(clamped)}
 
 
 def land(x, y, agent):

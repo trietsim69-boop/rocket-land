@@ -144,6 +144,25 @@ def test_trajectory():
     assert abs(total - tr["score"]) < 0.06 and abs(tr["states"][-1][6] - tr["score"]) < 0.06
 
 
+
+def test_numpy_policy_matches_sb3():
+    """The app's numpy policy picks the same action as SB3 at every step of a full episode, for every shipped model."""
+    from stable_baselines3 import PPO
+
+    from app import MODELS, act
+
+    for reward, weights in MODELS.items():
+        model, env = PPO.load(f"models/{reward}.zip", device="cpu"), StartPosition(gym.make("LunarLander-v3"), random=True)
+        for seed in range(3):
+            obs, _ = env.reset(seed=seed)
+            done = False
+            while not done:
+                a = int(model.predict(obs, deterministic=True)[0])
+                assert act(weights, obs) == a, (reward, seed, obs)
+                obs, _, term, trunc, _ = env.step(a)
+                done = term or trunc
+
+
 if __name__ == "__main__":
     test_sparse_decomposition()
     test_monitor_sees_true_score()
@@ -152,4 +171,5 @@ if __name__ == "__main__":
     test_start_position()
     test_click_mapping()
     test_trajectory()
+    test_numpy_policy_matches_sb3()
     print("ok")

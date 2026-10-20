@@ -8,7 +8,6 @@ import gradio as gr
 import gymnasium as gym
 import numpy as np
 from gymnasium.envs.box2d.lunar_lander import LEG_DOWN, SCALE, VIEWPORT_H, VIEWPORT_W
-from stable_baselines3 import PPO
 
 from env import Y_RANGE, StartPosition, clamp_start
 
@@ -18,8 +17,8 @@ REWARDS = {
     "sparse": "Only ±100 at the end, plus fuel cost",
     "hack": "Sparse + a naive “stay near the pad” bonus",
 }
-MODELS = {r: PPO.load(f"models/{r}.zip", device="cpu") for r in REWARDS}
-# Run each models/{r}.zip was copied from (best seed in the click region, Checkpoint C in tasks/todo.md)
+MODELS = {r: dict(np.load(f"models/{r}.npz")) for r in REWARDS}  # policy weights, from `train.py --export models/*.zip`
+# Run each models/{r}.zip/.npz was copied from (best seed in the click region, Checkpoint C in tasks/todo.md)
 REWARD_RUNS = {"default": "runs/default_s1_rand", "sparse": "runs/sparse_s2_rand", "pbrs": "runs/pbrs_s2_rand", "hack": "runs/hack_s1_rand"}
 CLICK_X = (-0.6, 0.6)  # Checkpoint C: narrower than training (±0.8), where the shipped agents land reliably
 APP_SEED = 0  # fixed terrain: every episode uses the terrain drawn on the page
@@ -49,6 +48,14 @@ def clamp_click(x, y):
     cx, cy = clamp_start(x, y)
     cx = float(np.clip(cx, *CLICK_X))
     return cx, cy, not (np.isclose(cx, x) and np.isclose(cy, y))
+
+
+def act(policy, obs):
+    """Deterministic PPO action in numpy (no torch on the server): obs -> 64 tanh -> 64 tanh -> 4 logits -> argmax,
+    the same as SB3's predict(obs, deterministic=True) for this MlpPolicy (checked in test_shaping.py)."""
+    h = np.tanh(policy["weight0"] @ obs + policy["bias0"])
+    h = np.tanh(policy["weight1"] @ h + policy["bias1"])
+    return int(np.argmax(policy["weight2"] @ h + policy["bias2"]))
 
 
 def make_env():
@@ -96,7 +103,7 @@ def trajectory(req):
                            round(score, 1), round(float(obs[1]), 2), round(float(np.hypot(obs[2], obs[3])), 2), round(fuel, 1)])
             if done:
                 break
-            a = int(model.predict(obs, deterministic=True)[0])
+            a = act(model, obs)
             obs, r, term, trunc, _ = env.step(a)
             score += r  # plain env reward = the true score
             fuel += FUEL[a]

@@ -19,7 +19,8 @@ Read both before starting work; tick boxes in `todo.md` when a task's verificati
 - Checks: `python test_shaping.py`
 - Train: `python train.py --reward {default,sparse,pbrs,hack} --seed N --steps N [--random-start]`
 - Plots/results: `python plot.py`
-- App: `python app.py`
+- App: `python app.py` (serving deps only: `requirements-app.txt`, no torch)
+- After replacing a model in `models/`: `python train.py --export models/<reward>.zip` (writes the `.npz` the app loads)
 
 ## Files
 - `shaping.py`: reward wrappers (`SparseReward`, `PotentialShaping`, `NaiveBonus`)
@@ -28,7 +29,7 @@ Read both before starting work; tick boxes in `todo.md` when a task's verificati
 - `plot.py`: learning curves, success heatmaps, progression strip → `results/`
 - `app.py`: `trajectory()` server function + one `gr.HTML` page (SVG scene + JS replay, design from `UI/designs/`)
 - `test_shaping.py`: the single assert-based check file
-- `models/`: the few final models the app ships (committed); `runs/` is scratch (gitignored)
+- `models/`: the app's final models, `.zip` (SB3) + `.npz` (numpy weights the app runs) (committed); `runs/` is scratch (gitignored)
 
 ## Rules that keep results correct
 - **Never fork or edit `lunar_lander.py`.** Use the installed Gymnasium env + wrappers. The sparse reward comes from subtracting the env's own shaping `Φ_env(s) = −100‖(x,y)‖ − 100‖(vx,vy)‖ − 100|θ| + 10·legL + 10·legR`, not from a copied file.

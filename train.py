@@ -63,6 +63,13 @@ class EvalCallback(BaseCallback):
         print(row, flush=True)
 
 
+def export_npz(path):
+    """models/x.zip -> models/x.npz with the policy MLP's weights, so the app runs it with numpy instead of torch."""
+    policy = PPO.load(path, device="cpu").policy
+    linears = [m for m in [*policy.mlp_extractor.policy_net, policy.action_net] if hasattr(m, "weight")]
+    np.savez(path[:-4] + ".npz", **{f"{k}{i}": getattr(m, k).detach().numpy() for i, m in enumerate(linears) for k in ("weight", "bias")})
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--reward", choices=WRAPPERS, default="default")
@@ -70,7 +77,12 @@ def main():
     p.add_argument("--steps", type=int, default=1_000_000)
     p.add_argument("--gae-lambda", type=float, default=HPARAMS["gae_lambda"])
     p.add_argument("--random-start", action="store_true", help="spawn anywhere in the allowed sky region (env.py)")
+    p.add_argument("--export", nargs="+", metavar="ZIP", help="only convert these model zips to .npz for the app, then exit")
     a = p.parse_args()
+    if a.export:
+        for path in a.export:
+            export_npz(path)
+        return
 
     out = f"runs/{a.reward}_s{a.seed}" + (f"_lam{a.gae_lambda}" if a.gae_lambda != HPARAMS["gae_lambda"] else "") + ("_rand" * a.random_start)
     os.makedirs(out, exist_ok=True)

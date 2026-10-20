@@ -44,6 +44,6 @@ Read both before starting work; tick boxes in `todo.md` when a task's verificati
 
 ## Boundaries
 - Ask before starting any training run longer than ~30 min, or a multi-run sweep. Measured on this machine: 1M steps ≈ 13 min solo; 2M ≈ 16–19 min each with 4 runs in parallel (`OMP_NUM_THREADS=2`).
-- Don't commit `runs/`, `.venv/`, or checkpoint dumps; only the app's models in `models/` (keep under ~50 MB total).
+- Don't commit `runs/` (except `runs/*/eval.csv`, the ~75 KB of inputs `plot.py` needs on a fresh clone), `.venv/`, or checkpoint dumps; only the app's models in `models/` (keep under ~50 MB total).
 - Commits use the repo owner's own git identity (Triet Le). No Claude author or co-author lines.
 - Don't add dependencies beyond the stack above without asking.

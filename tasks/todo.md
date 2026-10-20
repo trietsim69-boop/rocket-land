@@ -126,8 +126,8 @@
 **Scope:** M
 
 ### Checkpoint C
-- [ ] Heatmaps reviewed; clickable region decided (where best agent succeeds)
-- [ ] Pick which agents the app exposes (default: `pbrs`, `sparse`, `hack`)
+- [x] Heatmaps reviewed; clickable region decided (where best agent succeeds): app clamps clicks to x ∈ [−0.6, 0.6], y ∈ [0.6, 1.4] (training region stays x ±0.8)
+- [x] Pick which agents the app exposes (default: `pbrs`, `sparse`, `hack`): all 4, best seed by heatmap success inside the trimmed region → `models/{reward}.zip`: default s1 (94%), sparse s2 (84%), pbrs s2 (84%), hack s1 (97%). Picked on the same grid they're scored on, so these are app picks, not unbiased results (`results/summary.md` stays mean over seeds).
 
 ## Task 9: `land(x, y, agent)` inference
 **Description:** In `app.py` (or `env.py`): load model, run one deterministic episode from `(x, y)`, return frames + outcome (`landed` / `crashed` / `timeout`) + true score. Each frame gets a running SCORE overlay (green ≥ 0, red < 0). Models loaded once at startup.

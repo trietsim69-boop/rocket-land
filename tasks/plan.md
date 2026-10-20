@@ -60,6 +60,7 @@ env installs (box2d)
 - [ ] Task 9: `land(x, y, agent)` inference function
 
 ### Checkpoint C: chosen agents land from most of the sky
+Done: click region x ∈ [−0.6, 0.6], y ∈ [0.6, 1.4]; app ships all 4 rewards, best seed each, in `models/` (~600 KB).
 
 ### Phase 4: Web app
 - [ ] Task 10: Gradio click-to-land app (local)

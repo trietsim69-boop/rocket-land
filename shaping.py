@@ -52,9 +52,10 @@ class PotentialShaping(gym.Wrapper):
 
 class NaiveBonus(gym.Wrapper):
     """+bonus every step within `radius` of the pad (normalized x, y). Not potential-based: hovering near the
-    pad for 1000 steps (~+500) beats landing (+100), so the optimal policy changes. That's the point."""
+    pad for 1000 steps (~+500) beats landing (+100), so the optimal policy changes. That's the point.
+    Radius 0.2 was too small to ever be found (agent stalled at spawn height instead, runs/hack_s0_r0.2)."""
 
-    def __init__(self, env, bonus=0.5, radius=0.2):
+    def __init__(self, env, bonus=0.5, radius=0.5):
         super().__init__(env)
         self.bonus, self.radius = bonus, radius
 

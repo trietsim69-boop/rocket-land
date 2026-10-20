@@ -81,8 +81,8 @@
 **Description:** `NaiveBonus` on `SparseReward`: e.g. +0.5 every step within a radius of the pad. Not potential-based → optimal policy may change.
 
 **Acceptance criteria:**
-- [x] True score + success rate recorded: final −119, 0% success at every eval
-- [x] Rollout shows hovering/stalling, or a note on why not: stalls (hovers at spawn height, y≈1.0–1.4, until the 1000-step timeout) but never collects the bonus: 0 in-radius steps in rollouts from the 196k/327k/458k/655k/final checkpoints. Radius 0.2 sits right above the ground, so it's too risky to discover; stall comes from avoiding the −100 crash, not from the bonus.
+- [x] True score + success rate recorded: radius 0.5 → final 85 / 40%, unstable (688k: 200 / 80%, 884k: 16 / 0%). Radius 0.2 (runs/hack_s0_r0.2) → −119 / 0%.
+- [x] Rollout shows hovering/stalling, or a note on why not: radius 0.5 hacks. Final model lingers on/near the pad instead of settling: one episode keeps its legs scraping the ground for 657 steps until the 1000-step timeout (hack reward 299, true 121) vs a clean landing episode (hack 249, true 209), i.e. not landing pays more under the hack reward. Radius 0.2 never found the bonus (0 in-radius steps at any checkpoint) and just stalled at spawn height to avoid the −100 crash.
 
 **Verification:**
 - [x] `python train.py --reward hack --seed 0 --steps 1000000`; watch one rollout
@@ -92,7 +92,7 @@
 **Scope:** S
 
 ### Checkpoint B
-- [ ] All 4 conditions run on seed 0, each with a one-line explanation
+- [x] All 4 conditions run on seed 0, each with a one-line explanation
 - [ ] Decide step budget + seeds for the random-start sweep
 
 ## Task 7: Custom start position

@@ -72,7 +72,7 @@ def test_hack_bonus_only_near_pad(steps=3000):
         a = int(sparse.action_space.sample())
         obs, r_s, term, trunc, _ = sparse.step(a)
         _, r_h, *_ = hack.step(a)
-        inside = np.hypot(obs[0], obs[1]) < 0.2
+        inside = np.hypot(obs[0], obs[1]) < hack.radius
         assert abs(r_h - r_s - 0.5 * inside) < 1e-9, (r_h, r_s, inside)
         near += inside
         if term or trunc:
